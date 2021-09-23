@@ -1,5 +1,7 @@
 # shift-yt-optimizer Chrome Extension 
-*Pending Review
+
+**Pending Review**
+
 Chrome extension to hide/reduce the number of videos shown on YouTube.
 
 ![screenshot of shift-yt-optimizer in use](./screenshots/shift_yt_screenshot2.PNG)
