@@ -1,6 +1,11 @@
 # shift-yt-optimizer Chrome Extension 
 
-**Pending Review**
+**Published**
+https://chrome.google.com/webstore/detail/shift-youtube-optimizer/hfndjegliabemhpfcdecfehlipjdnecp
+
+**Known Bugs**
+-Doesn't work on 'search results' page which freezes the main thread, but async funcs still work
+-Needs refresh after first time turning on and downloading
 
 Chrome extension to hide/reduce the number of videos shown on YouTube.
 
