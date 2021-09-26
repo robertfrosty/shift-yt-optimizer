@@ -19,6 +19,7 @@ I spent a few days looking into how YouTube sets up the front-end of their websi
 -Hides all watched YouTube videos only on the youtube.com website. Tested and working pages include the homepage, user's channels, playlists, watching a video, search results page, and the explore/trending pages.
 
 -**Coming Soon**
+
 'Mobile Mode' : Need to chnage the targeting of the eventListeners etc. to allow for the change of elements that YouTube uses when switching between desktop and mobile, (example. 'ytd-app' ---> 'ytm-app')
 
 'Work Mode' : Predefine a list of channels/tags that you would like to allow videos from, and hide everything else. Great for work in a professional setting, or teachers who don't want to create multiple accounts.
