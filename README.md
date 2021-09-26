@@ -1,7 +1,8 @@
 ![logo icon of shift-yt-optimizer](./ui/icons/icon128px.png)
 # shift-yt-optimizer Chrome Extension 
 
-# Published
+**Published**
+
 https://chrome.google.com/webstore/detail/shift-youtube-optimizer/hfndjegliabemhpfcdecfehlipjdnecp
 
 **Update Pending Review**
