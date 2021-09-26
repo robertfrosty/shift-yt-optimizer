@@ -2,12 +2,17 @@ function hasClass(element, className) {
 	return (' ' + element.className + ' ').indexOf(' ' + className + ' ') > -1;
 }
 function findAncs(el, cls, clparam=0) {
-	if (clparam==0) {
-		while ((el = el.parentNode) && !hasClass(el, cls));
-	} else {
-		while ((el = el.parentNode) && (el.tagName != cls));
+	try {
+		if (clparam==0) {
+			while ((el = el.parentNode) && !hasClass(el, cls));
+		} else {
+			while ((el = el.parentNode) && (el.tagName != cls));
+		}
+		return el;
+	} catch(err) {
+		console.warn("%c findAncs() func was unable to find a parent element with the pre-defined className. If you are interested in helping fix this issue, please report this to https://github.com/robertfrosty/shift-yt-optimizer", "background: #222222;color: cyan; font-weight: bold;");
+		return false;
 	}
-	return el;
 }
 function attrQueryAll(cls=null, tag=null, attr, qterm) {
 	if (cls) {
@@ -24,43 +29,51 @@ function attrQueryAll(cls=null, tag=null, attr, qterm) {
 	return newarr;
 }
 
-function hideWatched(hideparam='ytd-rich-grid-renderer') {
+function hideWatched(hideparam=['ytd-rich-grid-renderer']) {
 	if(window.location.href.split("/")[3] == 'playlist?list=LL') {
 		return;
 	}
 	let locname = window.location.pathname.split('/');
 	var tohide = null;
 	if(locname[1] == 'watch') { //watching video
-		hideparam='ytd-item-section-renderer';
+		hideparam=['ytd-item-section-renderer'];
 		tohide = attrQueryAll(null, 'ytd-watch-flexy', 'role', 'main')[0].querySelectorAll('ytd-thumbnail-overlay-resume-playback-renderer:not(.shift-yt-used)');
+	} else if (locname[1] == 'results'){
+		hideparam=['ytd-vertical-list-renderer', 'ytd-item-section-renderer'];
+		tohide = attrQueryAll(null, 'ytd-search', 'role', 'main')[0].querySelectorAll('ytd-thumbnail-overlay-resume-playback-renderer:not(.shift-yt-used)');
 	} else {
 		tohide = attrQueryAll(null, 'ytd-browse', 'role', 'main')[0].querySelectorAll('ytd-thumbnail-overlay-resume-playback-renderer:not(.shift-yt-used)');
 		if(locname[1] == '') { //homepage
 			//do nothing	
 		} else if (locname[1] == 'c' || locname[1] == 'user' || locname[1] == 'channel') { //someone's channel
 			if (locname[locname.length - 1] == 'videos') {
-				hideparam='ytd-grid-renderer';
+				hideparam=['ytd-grid-renderer'];
 			} else {
-				hideparam='yt-horizontal-list-renderer';
+				hideparam=['yt-horizontal-list-renderer'];
 			}
 		} else if (locname[1] == 'feed') { //explore **double check this**
 			if(locname[2] == 'explore' || locname[2] == 'trending') {
-				hideparam = 'ytd-expanded-shelf-contents-renderer';
+				hideparam = ['ytd-expanded-shelf-contents-renderer'];
 			} else {
-				hideparam = 'ytd-grid-renderer';
+				hideparam = ['ytd-grid-renderer'];
 			}
 		} else if (locname[1] == 'playlist') { //watching playlist
-			hideparam='ytd-playlist-video-list-renderer';
+			hideparam=['ytd-playlist-video-list-renderer'];
 		}
 	}
 	if(tohide.length>0) {
 		for (let i=0;i<tohide.length;i++) {
-			findAncs(tohide[i], hideparam).classList.add('shift-yt-deleteme');
-			findAncs(tohide[i], hideparam).style.opacity = "0";
-			setTimeout(function(){findAncs(tohide[i], hideparam).style.display = "none"}, 1000);
-			tohide[i].classList.add('shift-yt-used');
+			for(let ii=0;ii<hideparam.length;ii++) {
+				var ancCont = findAncs(tohide[i], hideparam[ii]);
+				if(ancCont) {
+					ancCont.classList.add('shift-yt-deleteme');
+					ancCont.style.opacity = "0";
+					setTimeout(function(){findAncs(tohide[i], hideparam[ii]).style.display = "none"}, 1000);
+					tohide[i].classList.add('shift-yt-used');
+				}
+			}
 		}
-		console.log(" ______  __  __  __  ______  ______  \n/\\  ___\\/\\ \\_\\ \\/\\ \\/\\  ___\\/\\__  _\\ \n\\ \\___  \\ \\  __ \\ \\ \\ \\  __\\\\/_/\\ \\/ \n \\/\\_____\\ \\_\\ \\_\\ \\_\\ \\_\\     \\ \\_\\\n  \\/_____/\\/_/\\/_/\\/_/\\/_/      \\/_/ \n\n");
+		console.log("%c ______  __  __  __  ______  ______  \n/\\  ___\\/\\ \\_\\ \\/\\ \\/\\  ___\\/\\__  _\\ \n\\ \\___  \\ \\  __ \\ \\ \\ \\  __\\\\/_/\\ \\/ \n \\/\\_____\\ \\_\\ \\_\\ \\_\\ \\_\\     \\ \\_\\\n  \\/_____/\\/_/\\/_/\\/_/\\/_/      \\/_/ \n\n", "color: #2196F3;");
 	}
 }
 
@@ -71,7 +84,11 @@ function npObs_func() {
 	if (typeof observer !== 'undefined') {
 		observer.disconnect();
 	}
-	newpageObs = attrQueryAll(null, 'ytd-browse', 'role', 'main')[0];
+	if(window.location.pathname.split('/')[1] == 'results') {
+		newpageObs = attrQueryAll(null, 'ytd-search', 'role', 'main')[0];
+	}else {
+		newpageObs = attrQueryAll(null, 'ytd-browse', 'role', 'main')[0];
+	}
 	npobserver = new MutationObserver(function(mutationsList, npobserver){
 		chrome.storage.sync.get('mK', function(obj) {
 			if (obj['mK'] > 0) {
