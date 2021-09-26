@@ -94,7 +94,11 @@ function npObs_func() {
 			if (obj['mK'] > 0) {
 				setTimeout(hideWatched, 500);
 				npObs_func();
-				elemObs = attrQueryAll(null, 'ytd-browse', 'role', 'main')[0].querySelector('div#contents');
+				if(window.location.pathname.split('/')[1] == 'results') {
+					elemObs = attrQueryAll(null, 'ytd-search', 'role', 'main')[0].querySelector('div#contents');
+				} else {
+					elemObs = attrQueryAll(null, 'ytd-browse', 'role', 'main')[0].querySelector('div#contents');
+				}
 				observer = new MutationObserver(function(mutationsList, observer) {
 					chrome.storage.sync.get('mK', function(obj) {
 						if (obj['mK'] > 0) {
@@ -111,7 +115,7 @@ function npObs_func() {
 
 stylesh = document.createElement('style');
 stylesh.type = 'text/css';
-stylesh.innerHTML = 'ytd-rich-item-renderer, ytd-grid-renderer, ytd-grid-video-renderer, ytd-compact-video-renderer, ytd-playlist-video-renderer, ytd-video-renderer {-webkit-transition: opacity 1s ease-in-out;-moz-transition: opacity 1s ease-in-out;-ms-transition: opacity 1s ease-in-out;-o-transition: opacity 1s ease-in-out;}';
+stylesh.innerHTML = 'ytd-rich-item-renderer, ytd-grid-renderer, ytd-grid-video-renderer, ytd-compact-video-renderer, ytd-playlist-video-renderer, ytd-video-renderer, ytd-shelf-renderer {-webkit-transition: opacity 1s ease-in-out;-moz-transition: opacity 1s ease-in-out;-ms-transition: opacity 1s ease-in-out;-o-transition: opacity 1s ease-in-out;}';
 document.getElementsByTagName('head')[0].appendChild(stylesh);
 
 var loadObs = document.querySelectorAll('ytd-app')[0];
