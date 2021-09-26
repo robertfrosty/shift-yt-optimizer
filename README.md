@@ -18,7 +18,7 @@ I spent a few days looking into how YouTube sets up the front-end of their websi
 
 -Hides all watched YouTube videos only on the youtube.com website. Tested and working pages include the homepage, user's channels, playlists, watching a video, search results page, and the explore/trending pages.
 
--**Coming Soon**
+# Coming Soon
 
 'Mobile Mode' : Need to change the targeting of the eventListeners etc. to allow for the change of elements that YouTube uses when switching between desktop and mobile, (example. 'ytd-app' ---> 'ytm-app')
 
