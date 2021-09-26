@@ -20,6 +20,6 @@ I spent a few days looking into how YouTube sets up the front-end of their websi
 
 -**Coming Soon**
 
-'Mobile Mode' : Need to chnage the targeting of the eventListeners etc. to allow for the change of elements that YouTube uses when switching between desktop and mobile, (example. 'ytd-app' ---> 'ytm-app')
+'Mobile Mode' : Need to change the targeting of the eventListeners etc. to allow for the change of elements that YouTube uses when switching between desktop and mobile, (example. 'ytd-app' ---> 'ytm-app')
 
 'Work Mode' : Predefine a list of channels/tags that you would like to allow videos from, and hide everything else. Great for work in a professional setting, or teachers who don't want to create multiple accounts.
