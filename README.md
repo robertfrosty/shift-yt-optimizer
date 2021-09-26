@@ -1,3 +1,4 @@
+![logo icon of shift-yt-optimizer](./ui/icons/icon128px.png)
 # shift-yt-optimizer Chrome Extension 
 
 **Published**
