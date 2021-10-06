@@ -19,6 +19,7 @@ I spent a few days looking into how YouTube sets up the front-end of their websi
 # Features
 
 -Hides all watched YouTube videos only on the youtube.com website. Tested and working pages include the homepage, user's channels, playlists, watching a video, search results page, and the explore/trending pages.
+
 -Mobile Support Through Chrome Browser
 
 # Coming Soon
