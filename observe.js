@@ -1,12 +1,12 @@
 function hasClass(element, className) {
 	return (' ' + element.className + ' ').indexOf(' ' + className + ' ') > -1;
 }
-function findAncs(el, cls, clparam=0) {
+function findAncs(el, cls=0, clparam=0) {
 	try {
 		if (clparam==0) {
 			while ((el = el.parentNode) && !hasClass(el, cls));
 		} else {
-			while ((el = el.parentNode) && (el.tagName != cls));
+			while ((el = el.parentNode) && (el.tagName != clparam.toUpperCase()));
 		}
 		return el;
 	} catch(err) {
@@ -35,114 +35,147 @@ function hideWatched(hideparam=['ytd-rich-grid-renderer']) {
 	}
 	let locname = window.location.pathname.split('/');
 	var tohide = null;
-	if(locname[1] == 'watch') { //watching video
-		hideparam=['ytd-item-section-renderer'];
-		tohide = attrQueryAll(null, 'ytd-watch-flexy', 'role', 'main')[0].querySelectorAll('ytd-thumbnail-overlay-resume-playback-renderer:not(.shift-yt-used)');
-	} else if (locname[1] == 'results'){
-		hideparam=['ytd-vertical-list-renderer', 'ytd-item-section-renderer'];
-		tohide = attrQueryAll(null, 'ytd-search', 'role', 'main')[0].querySelectorAll('ytd-thumbnail-overlay-resume-playback-renderer:not(.shift-yt-used)');
-	} else {
-		tohide = attrQueryAll(null, 'ytd-browse', 'role', 'main')[0].querySelectorAll('ytd-thumbnail-overlay-resume-playback-renderer:not(.shift-yt-used)');
-		if(locname[1] == '') { //homepage
-			//do nothing	
-		} else if (locname[1] == 'c' || locname[1] == 'user' || locname[1] == 'channel') { //someone's channel
-			if (locname[locname.length - 1] == 'videos') {
-				hideparam=['ytd-grid-renderer'];
-			} else {
-				hideparam=['yt-horizontal-list-renderer'];
+	var flag = (yttype == 'ytd' ? true : false);
+	if (flag) { // Desktop version
+		if(locname[1] == 'watch') { //watching video
+			hideparam=['ytd-item-section-renderer'];
+			tohide = attrQueryAll(null, 'ytd-watch-flexy', 'role', 'main')[0].querySelectorAll('ytd-thumbnail-overlay-resume-playback-renderer:not(.shift-yt-used)');
+		} else if (locname[1] == 'results'){
+			hideparam=['ytd-vertical-list-renderer', 'ytd-item-section-renderer'];
+			tohide = attrQueryAll(null, 'ytd-search', 'role', 'main')[0].querySelectorAll('ytd-thumbnail-overlay-resume-playback-renderer:not(.shift-yt-used)');
+		} else {
+			if(locname[1] == '') { //homepage
+				hideparam=['ytd-rich-grid-renderer'];
+				tohide = attrQueryAll(null, 'ytd-browse', 'role', 'main')[0].querySelectorAll('ytd-thumbnail-overlay-resume-playback-renderer:not(.shift-yt-used)');
+			} else if (locname[1] == 'c' || locname[1] == 'user' || locname[1] == 'channel') { //someone's channel
+				if (locname[locname.length - 1] == 'videos') {
+					hideparam=['ytd-grid-renderer'];
+				} else {
+					hideparam=['yt-horizontal-list-renderer'];
+				}
+				tohide = attrQueryAll(null, 'ytd-browse', 'role', 'main')[0].querySelectorAll('ytd-thumbnail-overlay-resume-playback-renderer:not(.shift-yt-used)');
+			} else if (locname[1] == 'feed') { //explore
+				if(locname[2] == 'explore' || locname[2] == 'trending') {
+					hideparam = ['ytd-expanded-shelf-contents-renderer'];
+				} else {
+					hideparam = ['ytd-grid-renderer'];
+				}
+				tohide = attrQueryAll(null, 'ytd-browse', 'role', 'main')[0].querySelectorAll('ytd-thumbnail-overlay-resume-playback-renderer:not(.shift-yt-used)');
+			} else if (locname[1] == 'playlist') { //watching playlist
+				hideparam=['ytd-playlist-video-list-renderer'];
+				tohide = attrQueryAll(null, 'ytd-browse', 'role', 'main')[0].querySelectorAll('ytd-thumbnail-overlay-resume-playback-renderer:not(.shift-yt-used)');
 			}
-		} else if (locname[1] == 'feed') { //explore **double check this**
-			if(locname[2] == 'explore' || locname[2] == 'trending') {
-				hideparam = ['ytd-expanded-shelf-contents-renderer'];
-			} else {
-				hideparam = ['ytd-grid-renderer'];
-			}
-		} else if (locname[1] == 'playlist') { //watching playlist
-			hideparam=['ytd-playlist-video-list-renderer'];
 		}
-	}
-	if(tohide.length>0) {
-		for (let i=0;i<tohide.length;i++) {
-			for(let ii=0;ii<hideparam.length;ii++) {
-				var ancCont = findAncs(tohide[i], hideparam[ii]);
-				if(ancCont) {
-					ancCont.classList.add('shift-yt-deleteme');
-					ancCont.style.opacity = "0";
-					setTimeout(function(){findAncs(tohide[i], hideparam[ii]).style.display = "none"}, 1000);
-					tohide[i].classList.add('shift-yt-used');
+		if(tohide.length>0) {
+			for (let i=0;i<tohide.length;i++) {
+				for(let ii=0;ii<hideparam.length;ii++) {
+					var ancCont = findAncs(tohide[i], hideparam[ii]);
+					if(ancCont) {
+						ancCont.classList.add('shift-yt-deleteme');
+						ancCont.style.opacity = "0";
+						setTimeout(function(){findAncs(tohide[i], hideparam[ii]).style.display = "none"}, 1000);
+						tohide[i].classList.add('shift-yt-used');
+					}
 				}
 			}
+			console.log("%c ______  __  __  __  ______  ______  \n/\\  ___\\/\\ \\_\\ \\/\\ \\/\\  ___\\/\\__  _\\ \n\\ \\___  \\ \\  __ \\ \\ \\ \\  __\\\\/_/\\ \\/ \n \\/\\_____\\ \\_\\ \\_\\ \\_\\ \\_\\     \\ \\_\\\n  \\/_____/\\/_/\\/_/\\/_/\\/_/      \\/_/ \n\n", "color: #2196F3;");
 		}
-		console.log("%c ______  __  __  __  ______  ______  \n/\\  ___\\/\\ \\_\\ \\/\\ \\/\\  ___\\/\\__  _\\ \n\\ \\___  \\ \\  __ \\ \\ \\ \\  __\\\\/_/\\ \\/ \n \\/\\_____\\ \\_\\ \\_\\ \\_\\ \\_\\     \\ \\_\\\n  \\/_____/\\/_/\\/_/\\/_/\\/_/      \\/_/ \n\n", "color: #2196F3;");
+	} else { // Mobile Version
+		if(locname[1] == 'watch') { //watching video
+			hideparam=['ytm-video-with-context-renderer'];
+			tohide = document.querySelector('ytm-watch').querySelectorAll('ytm-thumbnail-overlay-resume-playback-renderer:not(.shift-yt-used)');
+		} else if (locname[1] == 'results'){
+			hideparam=['ytm-compact-video-renderer'];
+			tohide = document.querySelector('ytm-search').querySelectorAll('ytm-thumbnail-overlay-resume-playback-renderer:not(.shift-yt-used)');
+		} else {
+			if(locname[1] == '') { //homepage
+				hideparam=['ytm-rich-item-renderer']
+				tohide = document.querySelector('ytm-browse').querySelectorAll('ytm-thumbnail-overlay-resume-playback-renderer:not(.shift-yt-used)');
+			} else if (locname[1] == 'c' || locname[1] == 'user' || locname[1] == 'channel') { //someone's channel
+				hideparam=['ytm-compact-video-renderer'];
+				tohide = document.querySelector('ytm-browse').querySelectorAll('ytm-thumbnail-overlay-resume-playback-renderer:not(.shift-yt-used)');
+			} else if (locname[1] == 'feed') { //explore
+				hideparam=['ytm-item-section-renderer'];
+				tohide = document.querySelector('ytm-browse').querySelectorAll('ytm-thumbnail-overlay-resume-playback-renderer:not(.shift-yt-used)');
+			} else if (locname[1] == 'playlist') { //watching playlist
+				hideparam=['ytm-playlist-video-renderer'];
+				tohide = document.querySelector('ytm-browse').querySelectorAll('ytm-thumbnail-overlay-resume-playback-renderer:not(.shift-yt-used)');
+			}
+		}
+		if(tohide.length>0) {
+			for (let i=0;i<tohide.length;i++) {
+				for(let ii=0;ii<hideparam.length;ii++) {
+					var ancCont = findAncs(tohide[i], null, hideparam[ii]); // Search using tagName instead of className
+					if(ancCont) {
+						ancCont.classList.add('shift-yt-deleteme');
+						ancCont.style.opacity = "0";
+						setTimeout(function(){findAncs(tohide[i], null, hideparam[ii]).style.display = "none"}, 1000);
+						tohide[i].classList.add('shift-yt-used');
+					}
+				}
+			}
+			console.log("%c ______  __  __  __  ______  ______  \n/\\  ___\\/\\ \\_\\ \\/\\ \\/\\  ___\\/\\__  _\\ \n\\ \\___  \\ \\  __ \\ \\ \\ \\  __\\\\/_/\\ \\/ \n \\/\\_____\\ \\_\\ \\_\\ \\_\\ \\_\\     \\ \\_\\\n  \\/_____/\\/_/\\/_/\\/_/\\/_/      \\/_/ \n\n", "color: #2196F3;");
+		}
 	}
 }
 
-function npObs_func() {
-	if(typeof npobserver !== 'undefined') {
-		npobserver.disconnect();
-	}
-	if (typeof observer !== 'undefined') {
-		observer.disconnect();
-	}
-	if(window.location.pathname.split('/')[1] == 'results') {
-		newpageObs = attrQueryAll(null, 'ytd-search', 'role', 'main')[0];
-	}else {
-		newpageObs = attrQueryAll(null, 'ytd-browse', 'role', 'main')[0];
-	}
-	npobserver = new MutationObserver(function(mutationsList, npobserver){
-		chrome.storage.sync.get('mK', function(obj) {
-			if (obj['mK'] > 0) {
-				setTimeout(hideWatched, 500);
-				npObs_func();
-				if(window.location.pathname.split('/')[1] == 'results') {
-					elemObs = attrQueryAll(null, 'ytd-search', 'role', 'main')[0].querySelector('div#contents');
-				} else {
-					elemObs = attrQueryAll(null, 'ytd-browse', 'role', 'main')[0].querySelector('div#contents');
-				}
-				observer = new MutationObserver(function(mutationsList, observer) {
-					chrome.storage.sync.get('mK', function(obj) {
-						if (obj['mK'] > 0) {
-							hideWatched();
-						}
-					});
-				});
-				observer.observe(elemObs, {characterData:false, childList:true, attributes: false});
-			}
-		});
-	});
-	npobserver.observe(newpageObs, {attributes:true,characterData:true, childList:true});
+if(window.location.href.split("//")[1].split(".")[0] == 'm'|| document.querySelector('ytm-app')) {
+	yttype = 'ytm';
+} else {
+	yttype = 'ytd';
 }
 
 stylesh = document.createElement('style');
 stylesh.type = 'text/css';
-stylesh.innerHTML = 'ytd-rich-item-renderer, ytd-grid-renderer, ytd-grid-video-renderer, ytd-compact-video-renderer, ytd-playlist-video-renderer, ytd-video-renderer, ytd-shelf-renderer {-webkit-transition: opacity 1s ease-in-out;-moz-transition: opacity 1s ease-in-out;-ms-transition: opacity 1s ease-in-out;-o-transition: opacity 1s ease-in-out;}';
+stylesh.innerHTML = `${yttype}-video-with-context-renderer, ${yttype}-rich-item-renderer, ${yttype}-grid-renderer, ${yttype}-grid-video-renderer, ${yttype}-compact-video-renderer, ${yttype}-playlist-video-renderer, ${yttype}-video-renderer, ${yttype}-shelf-renderer {-webkit-transition: opacity 1s ease-in-out;-moz-transition: opacity 1s ease-in-out;-ms-transition: opacity 1s ease-in-out;-o-transition: opacity 1s ease-in-out;}`;
 document.getElementsByTagName('head')[0].appendChild(stylesh);
 
-var loadObs = document.querySelectorAll('ytd-app')[0];
-lobserver = new MutationObserver(function(mutationsList, lobserver) {
-	chrome.storage.sync.get('mK', function(obj) {
-		if (obj['mK'] > 0) {
-			hideWatched();
-		}
-	});
-});
-lobserver.observe(loadObs, {characterData:true, childList:true, attributes: true});
+if(yttype == 'ytd') {
+	var loadObs = document.querySelectorAll(`${yttype}-app`)[0];
+	lobserver = new MutationObserver(function(mutationsList, lobserver) { 
+		elemObs = document.querySelector('yt-page-navigation-progress');
+		observer = new MutationObserver(function(mutationsList, observer) {
+			if(elemObs.hidden) {
+				let toremoven = document.getElementsByClassName('shift-yt-used');
+				for(let ii=toremoven.length-1;ii>=0;ii--){toremoven[ii].classList.remove('shift-yt-used')};
+				chrome.storage.sync.get('mK', function(obj) {
+					if (obj['mK'] > 0) {
+						hideWatched();
+					}
+				});
+			}
+		});
+		observer.observe(elemObs, {characterData:true, childList:true, attributes: true});
 
-npObs_func();
-
-const startloc = window.location.pathname.split("/");
-if(startloc[1] == 'c' || startloc[1] == 'user' || startloc[1] == 'channel') {
-	elemObs = attrQueryAll(null, 'ytd-browse', 'role', 'main')[0].querySelector('div#contents');
-	observer = new MutationObserver(function(mutationsList, observer) {
 		chrome.storage.sync.get('mK', function(obj) {
 			if (obj['mK'] > 0) {
 				hideWatched();
 			}
 		});
 	});
-	observer.observe(elemObs, {characterData:false, childList:true, attributes: false});
+	lobserver.observe(loadObs, {characterData:true, childList:true, attributes: true});
+} else {
+	window.addEventListener('load', () => {
+		elemObs = document.querySelector('div.spinner');
+		observer = new MutationObserver(function(mutationsList, observer) {
+			if(elemObs.hidden) {
+				let toremoven = document.getElementsByClassName('shift-yt-used');
+				for(let ii=toremoven.length-1;ii>=0;ii--){toremoven[ii].classList.remove('shift-yt-used')};
+				chrome.storage.sync.get('mK', function(obj) {
+					if (obj['mK'] > 0) {
+						hideWatched();
+					}
+				});
+			}
+		});
+		observer.observe(elemObs, {characterData:true, childList:true, attributes: true});
+		chrome.storage.sync.get('mK', function(obj) {
+			if (obj['mK'] > 0) {
+				hideWatched();
+			}
+		});
+	});
 }
-
 window.addEventListener('scroll', function(e) {
 	if(this.oldScroll < this.scrollY) {
 		chrome.storage.sync.get('mK', function(obj) {

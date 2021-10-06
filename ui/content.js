@@ -3,16 +3,18 @@ function extRun() {
 		if(obj['mK'] > 0) {
 			if(window.location.host == 'www.youtube.com'){
 				hideWatched();
-				document.getElementById('contents').setAttribute('async-inject-listener', 'true');
-			}else {
+				document.body.setAttribute('async-inject-listener', 'true');
+			} else if (window.location.host == 'm.youtube.com') {
+				hideWatched();
+			} else {
 				console.log('Not Youtube');
 			}
 		} else {
 			let toremove = document.getElementsByClassName('shift-yt-deleteme');
-			for(let i=toremove.length-1;i>=0;i--){toremove[i].style.display="initial";toremove[i].style.opacity="1";toremove[i].classList.remove('shift-yt-deleteme')};
+			for(let i=toremove.length-1;i>=0;i--){toremove[i].style.display="inherit";toremove[i].style.opacity="1";toremove[i].classList.remove('shift-yt-deleteme')};
 			let toremoven = document.getElementsByClassName('shift-yt-used');
 			for(let ii=toremoven.length-1;ii>=0;ii--){toremoven[ii].classList.remove('shift-yt-used')};
-			document.getElementById('contents').setAttribute('async-inject-listener', 'false');
+			document.body.setAttribute('async-inject-listener', 'false');
 		}
 	});
 }
