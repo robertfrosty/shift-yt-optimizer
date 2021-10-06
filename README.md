@@ -4,8 +4,6 @@
 **Published**
 https://chrome.google.com/webstore/detail/shift-youtube-optimizer/hfndjegliabemhpfcdecfehlipjdnecp
 
--Added Alpha Mobile  Support
-
 Chrome extension to hide/reduce the number of videos shown on YouTube.
 
 ![screenshot of shift-yt-optimizer in use](./screenshots/shift_yt_screenshot1.PNG)
