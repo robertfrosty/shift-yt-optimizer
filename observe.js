@@ -29,6 +29,9 @@ function attrQueryAll(cls=null, tag=null, attr, qterm) {
 	return newarr;
 }
 
+/*
+
+
 function findHideParams() {
 	let locname = window.location.pathname.split('/');
 	var flag = true;
@@ -52,6 +55,20 @@ function findHideParams() {
 	return hideparams;
 }
 
+*/
+
+function resetReapply() {
+	// Reset everything
+	let toremove = document.getElementsByClassName('shift-yt-wm-deleteme');
+	for(let i=toremove.length-1;i>=0;i--){toremove[i].style.display="inherit";toremove[i].style.opacity="1";toremove[i].classList.remove('shift-yt-wm-deleteme')};
+	let toremoven = document.getElementsByClassName('shift-yt-wm-used');
+	for(let ii=toremoven.length-1;ii>=0;ii--){toremoven[ii].classList.remove('shift-yt-wm-used')};
+	document.body.setAttribute('async-inject-listener', 'false');
+
+	//Reapply hideWorkMode() - should just be able to call func, it will check for incl / exclude
+	hideWorkMode();
+}
+
 const notsyncGet = async (key) => {
 	return new Promise((resolve, reject) => {
 		chrome.storage.sync.get([key], function(obj) {
@@ -68,6 +85,7 @@ async function hideWorkMode(elist=null) {
 	if(!elist) {
 		elist = await notsyncGet('incl_tags');
 	}
+	exclude = await notsyncGet('excl');
 	for(tag in elist) {
 		if(elist[tag].length > 0) {
 			let e = elist[tag].trim();
@@ -110,13 +128,32 @@ async function hideWorkMode(elist=null) {
 				let re = new RegExp(e, 'i');
 				for(i=0; i<allmeta.length;i++) {
 					for(text in textparams) {
-						if(allmeta[i].querySelector(textparams[text]).innerText.match(re)) { // if video title contains words to remove, hide whole video
-							let torem = findAncs(allmeta[i], null, hideparams);
-							torem.classList.add('shift-yt-wm-deleteme', e);
-							torem.style.opacity = "0";
-							setTimeout(() => {torem.style.display = "none"}, 1000);
-							allmeta[i].classList.add('shift-yt-wm-used');
-							break;
+						console.log(exclude);
+						if(exclude) {
+							if(allmeta[i].querySelector(textparams[text]).innerText.match(re)) { // if video title contains words to remove, hide whole video
+								let torem = findAncs(allmeta[i], null, hideparams);
+								torem.classList.add('shift-yt-wm-deleteme', e);
+								torem.style.opacity = "0";
+								setTimeout(() => {torem.style.display = "none"}, 1000);
+								allmeta[i].classList.add('shift-yt-wm-used');
+								break;
+							}
+						} else {
+							if(allmeta[i].querySelector(textparams[text]).innerText.match(re)) { // if video title does NOT contains words to remove, hide whole video
+								allmeta[i].setAttribute('shift-save-for-later', true);
+								break;
+							}
+							if(text == textparams.length - 1) { //If this is last item in textparams list then hide the video
+								if(allmeta[i].getAttribute('shift-save-for-later')) {
+									console.log(allmeta[i]);
+									break;
+								}
+								let torem = findAncs(allmeta[i], null, hideparams);
+								torem.classList.add('shift-yt-wm-deleteme', e);
+								torem.style.opacity = "0";
+								setTimeout(() => {torem.style.display = "none"}, 1000);
+								allmeta[i].classList.add('shift-yt-wm-used');
+							}
 						}
 					}
 				}

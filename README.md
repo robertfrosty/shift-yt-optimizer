@@ -22,7 +22,7 @@ I spent a few days looking into how YouTube sets up the front-end of their websi
 
 -Hides all watched YouTube videos only on the youtube.com website. Tested and working pages include the homepage, user's channels, playlists, watching a video, search results page, and the explore/trending pages.
 
--'Work Mode' : Predefine a list of channels/tags that you would like to allow videos from, and hide everything else. Great for work in a professional setting, or teachers who don't want to create multiple accounts.
+-'Work Mode' : Predefine a list of channels/tags that you would like to allow videos from, and hide everything else. Great for work in a professional setting, or teachers who don't want to create multiple accounts. Can only show videos that contain matching keywords, or can only show videos that DO NOT contain matching keywords. [still testing, although I haven't found any bugs so far]
 
 # Coming Soon
 

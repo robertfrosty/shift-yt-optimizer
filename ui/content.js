@@ -19,6 +19,10 @@ function extRun() {
 	});
 }
 
+function extRun2() {
+	resetReapply();
+}
+
 chrome.storage.sync.get('mK', function(obj) {
 	if (obj['mK'] > 0) {
 		document.getElementById('hide_watched').checked = 'true';
@@ -150,4 +154,32 @@ document.getElementById('work_mode_toggle').addEventListener('change', async() =
 		}
 	});	
 
+});
+
+chrome.storage.sync.get('excl', function(obj) {
+	if(obj['excl'] === undefined) {
+		chrome.storage.sync.set({'excl':true});
+	} else {
+		if(!obj['excl']) {
+			document.getElementById("ext_include").checked = 'true';
+		}
+	}
+});
+
+document.querySelector("label[for='ext_include']").addEventListener('click', async () => {
+	let [tab] = await chrome.tabs.query({active:true,currentWindow:true});
+	chrome.storage.sync.set({'excl':false});
+	chrome.scripting.executeScript({
+		target:{tabId: tab.id},
+		func:extRun2,
+	});
+});
+
+document.querySelector("label[for='ext_exclude']").addEventListener('click', async () => {
+	let [tab] = await chrome.tabs.query({active:true,currentWindow:true});
+	chrome.storage.sync.set({'excl':true});
+	chrome.scripting.executeScript({
+		target:{tabId: tab.id},
+		func:extRun2,
+	});
 });
