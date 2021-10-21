@@ -5,6 +5,7 @@
 https://chrome.google.com/webstore/detail/shift-youtube-optimizer/hfndjegliabemhpfcdecfehlipjdnecp
 
 ***Update Pending Review From Google [v.1.0.3]***
+
 -Fixed faulty 'hideWatched' func
 
 -Add alpha 'hideWorkMode' func
