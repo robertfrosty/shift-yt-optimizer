@@ -4,8 +4,9 @@
 **Published**
 https://chrome.google.com/webstore/detail/shift-youtube-optimizer/hfndjegliabemhpfcdecfehlipjdnecp
 
-***Update Pending Review From Google [v.1.0.2]***
--Added Alpha Mobile  Support
+***Update Pending Review From Google [v.1.0.3]***
+-Fixed faulty 'hideWatched' func
+-Add alpha 'hideWorkMode' func
 
 Chrome extension to hide/reduce the number of videos shown on YouTube.
 
