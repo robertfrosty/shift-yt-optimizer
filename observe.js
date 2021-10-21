@@ -29,34 +29,6 @@ function attrQueryAll(cls=null, tag=null, attr, qterm) {
 	return newarr;
 }
 
-/*
-
-
-function findHideParams() {
-	let locname = window.location.pathname.split('/');
-	var flag = true;
-	if(flag) {
-		if(locname[1] == 'watch') { //watching video
-			hideparams = 'ytd-compact-video-renderer';
-		} else if (locname[1] == 'results'){
-			hideparams = 'ytd-video-renderer';
-		} else {
-			if(locname[1] == '') { //homepage
-				hideparams = 'ytd-rich-item-renderer';
-			} else if (locname[1] == 'c' || locname[1] == 'user' || locname[1] == 'channel') { //someone's channel
-				hideparams = 'ytd-grid-video-renderer';
-			} else if (locname[1] == 'feed') { //explore
-				hideparams = 'ytd-video-renderer';
-			} else if (locname[1] == 'playlist') { //watching playlist
-				hideparams = 'ytd-playlist-video-renderer';
-			}
-		}
-	}
-	return hideparams;
-}
-
-*/
-
 function resetReapply() {
 	// Reset everything
 	let toremove = document.getElementsByClassName('shift-yt-wm-deleteme');
