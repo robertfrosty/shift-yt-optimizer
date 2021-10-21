@@ -6,11 +6,31 @@
 	<body>
 		<div class="ext_title"><img class="ext_logo" src="icons/icon128px.png"><span>Shift</span></div>
 		<div class="ext_labels">
-			<label class="ext_switch">
-				<input type="checkbox" id="hide_watched">
-				<span class="ext_slider"></span>
-			</label>
-			<span>Hide Watched Videos</span>
+			<div class="ext_label">
+				<label class="ext_switch">
+					<input type="checkbox" id="hide_watched">
+					<span class="ext_slider"></span>
+				</label>
+				<span>Hide Watched Videos</span>
+			</div>
+			<div class="ext_label">
+				<label class="ext_switch">
+					<input type="checkbox" id="work_mode_toggle">
+					<span class="ext_slider"></span>
+				</label>
+				<span>Work Mode</span>
+			</div>
+			<div class="work_mode_dets nonactive">
+				<input type="text" id="ext_include_params">
+				<p></p>
+				<div id="ext_include_tags"></div>
+				<div class="ext_radios">
+					<input type="radio" id="ext_include" name="ext_include_togg" checked>
+					<label for="ext_include">Must Include</label>
+					<input type="radio" id="ext_exclude" name="ext_include_togg">
+					<label for="ext_exclude">Exclude</label>
+				</div>
+			</div>
 			<script src="content.js"></script>
 		</div>
 	</body>

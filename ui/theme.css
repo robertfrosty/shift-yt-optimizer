@@ -9,6 +9,10 @@ body {
 	width: 300px;
 }
 
+.nonactive {
+	display: none;
+}
+
 .ext_title {
 	padding: 2vw;
 	width: 100%;
@@ -21,11 +25,11 @@ body {
 .ext_title img {
 	display: block;
 	margin: 0 auto;
-	height: 20vh;
+	height: 20vw;
 	width: auto;
 	background: #FFF;
 	border-radius: 50%;
-	padding: 10vh;
+	padding: 10vw;
 }
 
 .ext_title span {
@@ -40,10 +44,18 @@ body {
 }
 
 .ext_labels {
+	padding: 5vw 0 0 0;
+}
+
+.ext_label {
 	display: flex;
-	justify-content: center;
 	align-items: center;
-	padding: 5vw 0;
+	justify-content: center;
+	margin: 10px 0px;
+}
+
+.ext_label span:not(.ext_slider) {
+	width: 150px;
 }
 
 .ext_labels span {
@@ -62,6 +74,82 @@ body {
 	opacity: 0;
 	width: 0;
 	height: 0;
+}
+
+.work_mode_dets {
+	text-align: center;
+}
+
+.work_mode_dets input[type="text"]{
+	display: block;
+	margin: 10px auto;
+	width: calc(100% - 70px);
+	height: 26px;
+	border: none;
+	outline: none;
+	border-radius: 10px;
+	color: #FFF;
+	background: #333;
+}
+
+#ext_include_tags {
+	display: flex;
+	flex-wrap: wrap;
+	width: calc(100% - 70px);
+	margin: 10px auto;
+	gap: 5px;
+}
+
+.tag {
+	padding: 1vw;
+	background: #333;
+	color: #FFF;
+	border-radius: 10px;
+	pointer-events: none;
+}
+
+.tag:after {
+	display: inline-block;
+	content: "x";
+	margin-left: 3vw;
+	width: 15px;
+	height: 15px;
+	border-radius: 50%;
+	background: #666;
+	cursor: pointer;
+	pointer-events: all;
+}
+
+.ext_radios {
+	display: flex;
+	justify-content: center;
+}
+
+#ext_include, #ext_exclude {
+	display: none;
+}
+
+.ext_radios label {
+	width: 50%;
+	padding: 10px 0;
+	background: #EEE;
+	border: 1px solid #333;
+	cursor: pointer;
+	color: #666;
+	user-select: none;
+}
+
+.ext_radios label:nth-child(1) {
+	border-right: none;
+}
+
+.ext_radios label:nth-child(2) {
+	border-left: none;
+}
+
+.ext_radios input[type="radio"]:checked + label {
+	background: #333;
+	color: #FFF;
 }
 
 /* Slider Track */ 
