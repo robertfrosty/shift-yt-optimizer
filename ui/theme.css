@@ -90,6 +90,7 @@ body {
 	border-radius: 10px;
 	color: #FFF;
 	background: #333;
+	text-align: center;
 }
 
 #ext_include_tags {
@@ -101,7 +102,7 @@ body {
 }
 
 .tag {
-	padding: 1vw;
+	padding: 1.5vw 1.5vw !important;
 	background: #333;
 	color: #FFF;
 	border-radius: 10px;
@@ -111,7 +112,9 @@ body {
 .tag:after {
 	display: inline-block;
 	content: "x";
-	margin-left: 3vw;
+	margin-left: 0.5vw;
+	margin-top: 0.5vw;
+	margin-bottom: 0.5vw;
 	width: 15px;
 	height: 15px;
 	border-radius: 50%;

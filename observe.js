@@ -32,7 +32,7 @@ function attrQueryAll(cls=null, tag=null, attr, qterm) {
 function resetReapply() {
 	// Reset everything
 	let toremove = document.getElementsByClassName('shift-yt-wm-deleteme');
-	for(let i=toremove.length-1;i>=0;i--){toremove[i].style.display="inherit";toremove[i].style.opacity="1";toremove[i].classList.remove('shift-yt-wm-deleteme')};
+	for(let i=toremove.length-1;i>=0;i--){toremove[i].style.display="flex";toremove[i].style.opacity="1";toremove[i].classList.remove('shift-yt-wm-deleteme')};
 	let toremoven = document.getElementsByClassName('shift-yt-wm-used');
 	for(let ii=toremoven.length-1;ii>=0;ii--){toremoven[ii].classList.remove('shift-yt-wm-used')};
 	document.body.setAttribute('async-inject-listener', 'false');
@@ -66,8 +66,8 @@ async function hideWorkMode(elist=null) {
 			} else { // search channels and video titles
 				if(locname[1] == 'watch') { //watching video
 					hideparams = 'ytd-compact-video-renderer';
-					allmeta = document.querySelectorAll("div.style-scope.metadata:not(.shift-yt-wm-used):not(.ytd-mini-player)");
-					textparams = ["span[id='video-title']", "yt-formatted-string[id='text']"];
+					allmeta = document.querySelectorAll("div.style-scope.metadata:not(.shift-yt-wm-used):not(.ytd-miniplayer)");
+					textparams = ["yt-formatted-string[id='text']"];
 				} else if (locname[1] == 'results'){
 					hideparams = 'ytd-video-renderer';
 					allmeta = document.querySelector('ytd-search').querySelectorAll("div.text-wrapper:not(.shift-yt-wm-used)");
@@ -77,30 +77,29 @@ async function hideWorkMode(elist=null) {
 						hideparams = 'ytd-rich-item-renderer';
 						allmeta = document.querySelectorAll("div.ytd-rich-grid-media:not(.shift-yt-wm-used)[id='meta']");
 						textparams = ["yt-formatted-string[id='video-title']", "yt-formatted-string[id='text']"];
-					} else if (locname[1] == 'c' || locname[1] == 'user' || locname[1] == 'channel') { //someone's channel
-						hideparams = 'ytd-grid-video-renderer';
-						allmeta = document.querySelectorAll("div.ytd-grid-video-render:not(.shift-yt-wm-used)[id='meta']");
-						textparams = ["a[id='video-title']"];
+					} else if (locname[1] == 'c' || locname[1] == 'user' || locname[1] == 'channel' || locname[1].includes("@")) { //someone's channel
+						hideparams = 'ytd-rich-item-renderer';
+						allmeta = document.querySelectorAll("div.ytd-rich-grid-media:not(.shift-yt-wm-used)[id='meta']");
+						textparams = ["yt-formatted-string[id='video-title']", "yt-formatted-string[id='text']"];
 					} else if (locname[1] == 'feed') { //explore
 						if(locname[2] == 'subscriptions' || locname[2] == 'library') {
-							allmeta = document.querySelectorAll("div.ytd-grid-video-renderer:not(.shift-yt-wm-used):not(.ytd-mini-player):not(.ytd-watch-flexy)[id='meta']");
-							hideparams = 'ytd-grid-video-renderer';
-							textparams = ["a[id='video-title']", "yt-formatted-string[id='text']"];
+							allmeta = document.querySelectorAll("div.ytd-rich-grid-media:not(.shift-yt-wm-used):not(.ytd-mini-player):not(.ytd-watch-flexy)[id='meta']");
+							hideparams = 'ytd-rich-item-renderer';
+							textparams = ["yt-formatted-string[id='video-title']", "yt-formatted-string[id='text']"];
 						} else {
 							allmeta = document.querySelectorAll("div.text-wrapper:not(.shift-yt-wm-used)");
 							hideparams = 'ytd-video-renderer';
 							textparams = ["a[id='video-title']", "yt-formatted-string[id='text']", "yt-formatted-string[id='description-text']"];
 						}
-					} else if (locname[1] == 'playlist') { //watching playlist
+					} else if (locname[1].includes('playlist')) { //watching playlist
 						hideparams = 'ytd-playlist-video-renderer';
-						allmeta = document.querySelectorAll("div.ytd-playlist-video-render:not(.shift-yt-wm-used)[id='meta']");
+						allmeta = document.querySelectorAll("div.ytd-playlist-video-renderer:not(.shift-yt-wm-used)[id='meta']");
 						textparams = ["a[id='video-title']", "yt-formatted-string[id='text']"];
 					}
 				}
 				let re = new RegExp(e, 'i');
 				for(i=0; i<allmeta.length;i++) {
 					for(text in textparams) {
-						console.log(exclude);
 						if(exclude) {
 							if(allmeta[i].querySelector(textparams[text]).innerText.match(re)) { // if video title contains words to remove, hide whole video
 								let torem = findAncs(allmeta[i], null, hideparams);
@@ -117,7 +116,6 @@ async function hideWorkMode(elist=null) {
 							}
 							if(text == textparams.length - 1) { //If this is last item in textparams list then hide the video
 								if(allmeta[i].getAttribute('shift-save-for-later')) {
-									console.log(allmeta[i]);
 									break;
 								}
 								let torem = findAncs(allmeta[i], null, hideparams);
@@ -136,6 +134,10 @@ async function hideWorkMode(elist=null) {
 
 function hideWatched(hideparam=['ytd-rich-grid-renderer']) {
 	if(window.location.href.split("/")[3] == 'playlist?list=LL') {
+		console.log("shift-yt-optimizer has been disabled for this page.");
+		return;
+	} else if (window.location.href.split("/")[4] == "history"){
+		console.log("shift-yt-optimizer has been disabled for this page.");
 		return;
 	}
 	let locname = window.location.pathname.split('/');
@@ -152,9 +154,9 @@ function hideWatched(hideparam=['ytd-rich-grid-renderer']) {
 			if(locname[1] == '') { //homepage
 				hideparam=['ytd-rich-grid-renderer'];
 				tohide = attrQueryAll(null, 'ytd-browse', 'role', 'main')[0].querySelectorAll('ytd-thumbnail-overlay-resume-playback-renderer:not(.shift-yt-used)');
-			} else if (locname[1] == 'c' || locname[1] == 'user' || locname[1] == 'channel') { //someone's channel
+			} else if (locname[1] == 'c' || locname[1] == 'user' || locname[1] == 'channel' || locname[1].includes("@")) { //someone's channel
 				if (locname[locname.length - 1] == 'videos') {
-					hideparam=['ytd-grid-renderer'];
+					hideparam=['ytd-rich-grid-renderer'];
 				} else {
 					hideparam=['yt-horizontal-list-renderer'];
 				}
@@ -162,11 +164,14 @@ function hideWatched(hideparam=['ytd-rich-grid-renderer']) {
 			} else if (locname[1] == 'feed') { //explore
 				if(locname[2] == 'explore' || locname[2] == 'trending') {
 					hideparam = ['ytd-expanded-shelf-contents-renderer'];
-				} else {
+				} else if (locname[2] == 'history') { 
+					hideparam = ['ytd-item-section-renderer']
+				}
+				else {
 					hideparam = ['ytd-grid-renderer'];
 				}
 				tohide = attrQueryAll(null, 'ytd-browse', 'role', 'main')[0].querySelectorAll('ytd-thumbnail-overlay-resume-playback-renderer:not(.shift-yt-used)');
-			} else if (locname[1] == 'playlist') { //watching playlist
+			} else if (locname[1].includes('playlist')) { //watching playlist
 				hideparam=['ytd-playlist-video-list-renderer'];
 				tohide = attrQueryAll(null, 'ytd-browse', 'role', 'main')[0].querySelectorAll('ytd-thumbnail-overlay-resume-playback-renderer:not(.shift-yt-used)');
 			}
@@ -203,7 +208,7 @@ function hideWatched(hideparam=['ytd-rich-grid-renderer']) {
 			} else if (locname[1] == 'feed') { //explore
 				hideparam=['ytm-item-section-renderer'];
 				tohide = document.querySelector('ytm-browse').querySelectorAll('ytm-thumbnail-overlay-resume-playback-renderer:not(.shift-yt-used)');
-			} else if (locname[1] == 'playlist') { //watching playlist
+			} else if (locname[1].includes('playlist')) { //watching playlist
 				hideparam=['ytm-playlist-video-renderer'];
 				tohide = document.querySelector('ytm-browse').querySelectorAll('ytm-thumbnail-overlay-resume-playback-renderer:not(.shift-yt-used)');
 			}
@@ -237,14 +242,14 @@ chrome.runtime.onMessage.addListener(
 					let r = request.remparams.trim();
 					let toremove = document.getElementsByClassName(r);
 					for(let i=toremove.length-1;i>=0;i--){
-						toremove[i].style.display="inherit";
+						toremove[i].style.display="flex";
 						toremove[i].style.opacity="1";
 						toremove[i].classList.remove('shift-yt-wm-deleteme');
 						toremove[i].querySelector('.shift-yt-wm-used').classList.remove('shift-yt-wm-used');
 					}
 				} else { // no remove params, remove everything
 					let toremove = document.getElementsByClassName('shift-yt-wm-deleteme');
-					for(let i=toremove.length-1;i>=0;i--){toremove[i].style.display="inherit";toremove[i].style.opacity="1";toremove[i].classList.remove('shift-yt-wm-deleteme')};
+					for(let i=toremove.length-1;i>=0;i--){toremove[i].style.display="flex";toremove[i].style.opacity="1";toremove[i].classList.remove('shift-yt-wm-deleteme')};
 					let toremoven = document.getElementsByClassName('shift-yt-wm-used');
 					for(let ii=toremoven.length-1;ii>=0;ii--){toremoven[ii].classList.remove('shift-yt-wm-used')};
 					document.body.setAttribute('async-inject-listener', 'false');
@@ -288,11 +293,9 @@ else {
 if(yttype == 'ytd') {
 	var loadObs = document.querySelectorAll(`${yttype}-app`)[0];
 	lobserver = new MutationObserver(function(mutationsList, lobserver) {
-		console.log(`page loaded`);
 		elemObs = document.querySelector('yt-page-navigation-progress');
 		observer = new MutationObserver(function(mutationsList, observer) {
 			if(elemObs.hidden) {
-				console.log('page_loaded3');
 				loadFunc();
 				let toremoven = document.getElementsByClassName('shift-yt-used');
 				for(let ii=toremoven.length-1;ii>=0;ii--){toremoven[ii].classList.remove('shift-yt-used')};
@@ -308,7 +311,9 @@ if(yttype == 'ytd') {
 				});
 			}
 		});
-		observer.observe(elemObs, {characterData:true, childList:true, attributes: true});
+		if(document.querySelector('yt-page-navigation-progress')){
+			observer.observe(elemObs, {characterData:true, childList:true, attributes: true});
+		}
 
 		chrome.storage.sync.get('mK', function(obj) {
 			if (obj['mK'] > 0) {
