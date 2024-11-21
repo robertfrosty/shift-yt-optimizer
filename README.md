@@ -11,8 +11,6 @@ Chrome extension to hide/reduce the number of videos shown on YouTube.
 
 -Fixed function and added parameters for 'hideWorkMode'
 
-Need to update parameters to also hide mixes, podcasts and shorts (and any other new types that I've missed)
-
 ![screenshot of shift-yt-optimizer in use](./screenshots/shift_yt_screenshot1.PNG)
 
 As the summary above states, this is a simple open-source chrome extension written in vanilla JavaScript, CSS and of course, HTML, using the Chrome Extension format, although shortly there should be an extension for Firefox as well. I noticed a number of other Chrome Extensions that were similar but they all only worked on the homepage, so I decided to make one that worked all over the site, and didn't need the mouse to scroll before it would activate.
@@ -27,4 +25,5 @@ I spent a few days looking into how YouTube sets up the front-end of their websi
 
 # Coming Soon
 
-'Mobile Mode' Improvements
+'Mobile Mode' Improvements (Google Chrome does not allow extensions on mobile devices, so this is a very small percentage of users)
+Need to update parameters to also hide mixes, podcasts and shorts (and any other new types that I've missed)
