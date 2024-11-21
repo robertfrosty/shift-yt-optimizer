@@ -1,10 +1,17 @@
 ![logo icon of shift-yt-optimizer](./ui/icons/icon128px.png)
 # shift-yt-optimizer Chrome Extension 
 
-**Published**
+**Published & Featured**
 https://chrome.google.com/webstore/detail/shift-youtube-optimizer/hfndjegliabemhpfcdecfehlipjdnecp
 
-***Update Pending Review From Google [v.1.0.3]***
+***Update Pending Review From Google [v.1.1.0]***
+
+-Updated parameters for 'hideWatched' mode
+-Fixed function and added parameters for 'hideWorkMode'
+
+Need to update parameters to also hide mixes, podcasts and shorts (and any other new types that I've missed)
+
+***Update Reviewed And Approved From Google [v.1.0.3]***
 
 -Fixed faulty 'hideWatched' func
 
