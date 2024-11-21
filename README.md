@@ -2,6 +2,7 @@
 # shift-yt-optimizer Chrome Extension 
 
 **Published & Featured**
+
 https://chrome.google.com/webstore/detail/shift-youtube-optimizer/hfndjegliabemhpfcdecfehlipjdnecp
 
 ***Update Pending Review From Google [v.1.1.0]***
