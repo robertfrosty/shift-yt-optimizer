@@ -4,6 +4,7 @@ Chrome extension to hide/reduce the number of videos shown on YouTube.
 
 **Published & Featured** : https://chrome.google.com/webstore/detail/shift-youtube-optimizer/hfndjegliabemhpfcdecfehlipjdnecp
 
+<img width="473" alt="Screenshot 2024-11-21 at 4 38 38 PM" src="https://github.com/user-attachments/assets/59bd9b9d-e333-4d9f-aa3b-0daab262fcd4">
 
 ***Update Pending Review From Google [v.1.1.0]***
 
