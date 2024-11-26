@@ -32,7 +32,7 @@ function attrQueryAll(cls=null, tag=null, attr, qterm) {
 function resetReapply() {
 	// Reset everything
 	let toremove = document.getElementsByClassName('shift-yt-wm-deleteme');
-	for(let i=toremove.length-1;i>=0;i--){toremove[i].style.display="flex";toremove[i].style.opacity="1";toremove[i].classList.remove('shift-yt-wm-deleteme')};
+	for(let i=toremove.length-1;i>=0;i--){toremove[i].style.display="block";toremove[i].style.opacity="1";toremove[i].classList.remove('shift-yt-wm-deleteme')};
 	let toremoven = document.getElementsByClassName('shift-yt-wm-used');
 	for(let ii=toremoven.length-1;ii>=0;ii--){toremoven[ii].classList.remove('shift-yt-wm-used')};
 	document.body.setAttribute('async-inject-listener', 'false');
@@ -132,6 +132,48 @@ async function hideWorkMode(elist=null) {
 	}
 }
 
+function hideAds(){
+	var hideparam = null;
+	var tohide = null;
+
+	if(window.location.pathname.split('/')[1] ==''){
+		hideparam = ["ytd-rich-grid-renderer"];
+		tohide = document.querySelector("ytd-browse").querySelectorAll("ytd-ad-slot-renderer");
+
+		for(i=0;i<tohide.length;i++){
+			ancCont="";
+			ancCont = findAncs(tohide[i], hideparam);
+			if(ancCont) {
+				ancCont.classList.add('shift-yt-ads-deleteme');
+				ancCont.style.opacity = "0";
+				setTimeout(function(ancCont){ancCont.style.display="none"}, 1000, ancCont);
+				tohide[i].classList.add('shift-yt-ads-used');
+			}
+		}
+	}
+}
+
+function hideMixes(){
+	var hideparam = null;
+	var tohide = null;
+
+	if(window.location.pathname.split('/')[1] ==''){
+		hideparam = ["ytd-rich-grid-renderer"];
+		tohide = document.querySelector("ytd-browse").querySelectorAll("yt-collection-thumbnail-view-model");
+
+		for(i=0;i<tohide.length;i++){
+			ancCont="";
+			ancCont = findAncs(tohide[i], hideparam);
+			if(ancCont) {
+				ancCont.classList.add('shift-yt-mix-deleteme');
+				ancCont.style.opacity = "0";
+				setTimeout(function(ancCont){ancCont.style.display="none"}, 1000, ancCont);
+				tohide[i].classList.add('shift-yt-mix-used');
+			}
+		}
+	}
+}
+
 function hideWatched(hideparam=['ytd-rich-grid-renderer']) {
 	if(window.location.href.split("/")[3] == 'playlist?list=LL') {
 		console.log("shift-yt-optimizer has been disabled for this page.");
@@ -153,7 +195,7 @@ function hideWatched(hideparam=['ytd-rich-grid-renderer']) {
 		} else {
 			if(locname[1] == '') { //homepage
 				hideparam=['ytd-rich-grid-renderer'];
-				tohide = attrQueryAll(null, 'ytd-browse', 'role', 'main')[0].querySelectorAll('ytd-thumbnail-overlay-resume-playback-renderer:not(.shift-yt-used)');
+				tohide = attrQueryAll(null, 'ytd-browse', 'role', 'main')[0].querySelectorAll('ytd-thumbnail-overlay-resume-playback-renderer:not(.shift-yt-used)'); //yt-thumbnail-overlay-progress-bar-view-model:not(.shift-yt-used)
 			} else if (locname[1] == 'c' || locname[1] == 'user' || locname[1] == 'channel' || locname[1].includes("@")) { //someone's channel
 				if (locname[locname.length - 1] == 'videos') {
 					hideparam=['ytd-rich-grid-renderer'];
@@ -242,14 +284,14 @@ chrome.runtime.onMessage.addListener(
 					let r = request.remparams.trim();
 					let toremove = document.getElementsByClassName(r);
 					for(let i=toremove.length-1;i>=0;i--){
-						toremove[i].style.display="flex";
+						toremove[i].style.display="block";
 						toremove[i].style.opacity="1";
 						toremove[i].classList.remove('shift-yt-wm-deleteme');
 						toremove[i].querySelector('.shift-yt-wm-used').classList.remove('shift-yt-wm-used');
 					}
 				} else { // no remove params, remove everything
 					let toremove = document.getElementsByClassName('shift-yt-wm-deleteme');
-					for(let i=toremove.length-1;i>=0;i--){toremove[i].style.display="flex";toremove[i].style.opacity="1";toremove[i].classList.remove('shift-yt-wm-deleteme')};
+					for(let i=toremove.length-1;i>=0;i--){toremove[i].style.display="block";toremove[i].style.opacity="1";toremove[i].classList.remove('shift-yt-wm-deleteme')};
 					let toremoven = document.getElementsByClassName('shift-yt-wm-used');
 					for(let ii=toremoven.length-1;ii>=0;ii--){toremoven[ii].classList.remove('shift-yt-wm-used')};
 					document.body.setAttribute('async-inject-listener', 'false');
@@ -271,6 +313,11 @@ function scrollHide(e) {
 				hideWorkMode();
 			}
 		});
+		chrome.storage.sync.get('adMode', function(obj) {
+			if(obj['adMode']){
+				hideAds();
+			}
+		})
 	}
 	this.oldScroll = this.scrollY;
 }

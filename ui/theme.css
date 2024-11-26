@@ -44,7 +44,7 @@ body {
 }
 
 .ext_labels {
-	padding: 5vw 0 0 0;
+	padding: 2vw 0 0 0;
 }
 
 .ext_label {
@@ -195,4 +195,10 @@ input:checked + .ext_slider:before {
 	-webkit-transform: translateX(26px);
 	-ms-transform: translateX(26px);
 	transform: translateX(26px);
+}
+
+.ext_checkbox_cont {
+	text-align: center;
+	margin: 2vw;
+	padding: 2vw;
 }
